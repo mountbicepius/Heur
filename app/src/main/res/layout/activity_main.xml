@@ -23,4 +23,13 @@
         android:layout_alignParentStart="true"
         android:layout_marginBottom="110dp"
         tools:ignore="RtlCompat" />
+
+    <com.novaorbis.anirudh.convos.TypeWriter
+        android:id="@+id/titleH"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="189dp"
+        android:textSize="26dp" />
 </RelativeLayout>
