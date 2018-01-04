@@ -24,7 +24,7 @@ public class TypeWriter extends TextView {
         @Override
         public void run() {
             setText(mText.subSequence(0,mIndex++));
-            if(mIndex <= mIndex++)
+            if(mIndex <= mText.length())
                 obj.postDelayed(obj2,mDelay);
         }
     };

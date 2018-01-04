@@ -1,9 +1,13 @@
 package com.novaorbis.anirudh.convos;
 
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorSet;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ProgressBar;
 
 import java.util.Random;
@@ -23,7 +27,13 @@ public class MainActivity extends Activity implements Authentication {
         setContentView(R.layout.activity_main);
         final TypeWriter tw = findViewById(R.id.titleH);
         final ProgressBar pb =findViewById(R.id.loaden);
-
+        Animation hyperspaceJumpAnimation = AnimationUtils.loadAnimation(this, R.anim.fade);
+        findViewById(R.id.header).setAnimation(hyperspaceJumpAnimation);
+        assert pb !=null;
+        pb.isIndeterminate();
+        tw.setText("");
+        tw.setCharacterDelay(150);
+        tw.animateText("Conversations ReImagined");
         new Handler().postDelayed(new Runnable() {
 
             // Using handler with postDelayed called runnable run method
@@ -31,22 +41,12 @@ public class MainActivity extends Activity implements Authentication {
 
             @Override
             public void run() {
-                if(!isAuth) {
+                 Intent i = new Intent(MainActivity.this, VerifyActivity.class);
 
-                    Intent i = new Intent(MainActivity.this, VerifyActivity.class);
-                    pb.isIndeterminate();
-                    tw.setText("");
-                    tw.setCharacterDelay(150);
-                    tw.animateText("Conversations ReImagined");
                     startActivity(i);
-                }
-
-                Intent intent =new Intent(MainActivity.this, TalksActivity.class);
-                pb.isIndeterminate();
-                tw.setText("");
-                tw.setCharacterDelay(150);
-                tw.animateText("Conversations ReImagined");
-                startActivityForResult(intent,1);
+               // }
+                //Intent intent =new Intent(MainActivity.this, TalksActivity.class);
+                //startActivityForResult(intent,1);
                 // close this activity
                 finish();
             }
