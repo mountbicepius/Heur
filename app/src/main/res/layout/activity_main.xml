@@ -12,8 +12,10 @@
         android:layout_height="217dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="104dp"
-        android:src="@mipmap/icon" />
+        android:layout_marginTop="110dp"
+        android:src="@mipmap/icon"
+        tools:layout_editor_absoluteX="69dp"
+        tools:layout_editor_absoluteY="16dp" />
 
     <ProgressBar
         android:id="@+id/loaden"
@@ -21,8 +23,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="110dp"
-        tools:ignore="RtlCompat" />
+        android:layout_marginBottom="150dp"
+        tools:ignore="RtlCompat"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="294dp" />
 
     <com.novaorbis.anirudh.convos.TypeWriter
         android:id="@+id/titleH"
@@ -30,6 +34,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="189dp"
-        android:textSize="26dp" />
+        android:layout_marginBottom="84dp"
+        android:textSize="26dp"
+        tools:layout_editor_absoluteX="192dp"
+        tools:layout_editor_absoluteY="382dp" />
 </RelativeLayout>
