@@ -4,11 +4,13 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TalksActivity extends Activity {
+public class TalksActivity extends Activity
+{
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -25,6 +27,13 @@ public class TalksActivity extends Activity {
         Initialize();
         mAdapter =new chatServiceAdapter(dataList);
         mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+
+            }
+        });
     }
     private void Initialize()
     {
