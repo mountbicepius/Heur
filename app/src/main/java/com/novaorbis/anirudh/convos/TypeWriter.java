@@ -9,7 +9,7 @@ import android.widget.TextView;
 public class TypeWriter extends TextView {
     private CharSequence mText;
     private int mIndex;
-    private long mDelay = 150; // in ms
+    private long mDelay = 50; // in ms
 
     public TypeWriter(Context context) {
         super(context);

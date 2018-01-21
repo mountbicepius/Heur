@@ -1,18 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    tools:context=".TalksActivity">
+    tools:context=".TalksActivity"
+    android:orientation="horizontal">
 
-<android.support.v7.widget.RecyclerView
-    android:id="@+id/chatList"
+
+    <ListView
+        android:id="@+id/chats"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
-</android.support.v7.widget.RecyclerView>
+</ListView>
 
-</LinearLayout>
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="58dp"
+        android:layout_height="58dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="21dp"
+        android:layout_marginEnd="34dp"
+        android:background="@drawable/aiss"
+        android:padding="11dp"
+        android:src="@mipmap/fab"
+        android:theme="@style/AppTheme"
+        app:fabSize="mini" />
+
+
+</RelativeLayout>

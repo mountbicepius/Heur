@@ -1,14 +1,11 @@
 package com.novaorbis.anirudh.convos;
 
-import java.util.ArrayList;
-import java.util.List;
 
-public class chatUser
-{
+
+public class chatUser  {
     public int imageId;
     public String username;
     public String chatcrumb;
-    private List<chatUser> dataList;
     public int getImageId() {
         return imageId;
     }
