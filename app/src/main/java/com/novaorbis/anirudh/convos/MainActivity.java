@@ -41,7 +41,7 @@ public class MainActivity extends Activity implements Authentication {
 
             @Override
             public void run() {
-                 Intent i = new Intent(MainActivity.this, VerifyActivity.class);
+                 Intent i = new Intent(MainActivity.this, TalksActivity.class);
 
                     startActivity(i);
                // }

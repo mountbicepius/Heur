@@ -53,9 +53,7 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <provider
-            android:authorities="com.novaorbis.anirudh.convos"
-            android:name=".ContactsProvider"></provider>
+
         <activity
             android:name=".MainActivity"
             android:theme="@android:style/Theme.Material.Light.NoActionBar.Fullscreen">
