@@ -2,6 +2,7 @@ package com.novaorbis.anirudh.convos;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
@@ -18,8 +19,8 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -29,8 +30,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import org.json.JSONObject;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -40,7 +40,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.Manifest.permission.READ_CONTACTS;
-import static android.content.ContentValues.TAG;
 
 /**
  * A login screen that offers login via email/password.
@@ -75,28 +74,20 @@ public class VerifyActivity extends Activity implements LoaderCallbacks<Cursor> 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verify);
         // Set up the login form.
-        mEmailView =  findViewById(R.id.email);
+        mEmailView = findViewById(R.id.email);
         populateAutoComplete();
 
         mPasswordView = findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
-                }
-                return false;
+        mPasswordView.setOnEditorActionListener((textView, id, keyEvent) -> {
+            if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
+                attemptLogin();
+                return true;
             }
+            return false;
         });
 
         Button mEmailSignInButton = findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptLogin();
-            }
-        });
+        mEmailSignInButton.setOnClickListener(view -> attemptLogin());
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
@@ -168,22 +159,9 @@ public class VerifyActivity extends Activity implements LoaderCallbacks<Cursor> 
             focusView = mPasswordView;
             cancel = true;
         }
-        else if(TextUtils.isEmpty(password) || !isPasswordValid(password))
-        {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
-        }
 
         // Check for a valid email address.
-        if(!TextUtils.isEmpty(email)&& !isEmailValid(email))
-        {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
-            cancel = true;
-        }
-
-         else if (TextUtils.isEmpty(email)) {
+        if (TextUtils.isEmpty(email)) {
             mEmailView.setError(getString(R.string.error_field_required));
             focusView = mEmailView;
             cancel = true;
@@ -201,9 +179,8 @@ public class VerifyActivity extends Activity implements LoaderCallbacks<Cursor> 
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            //mAuthTask = new UserLoginTask(email, password);
-            //mAuthTask.execute((Void) null);
-            Log.d(TAG,"Jid and password are valid ,proceeding with login.");
+            mAuthTask = new UserLoginTask(email, password);
+            mAuthTask.execute((Void) null);
         }
     }
 
@@ -225,32 +202,25 @@ public class VerifyActivity extends Activity implements LoaderCallbacks<Cursor> 
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
         // for very easy animations. If available, use these APIs to fade-in
         // the progress spinner.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+        int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-                }
-            });
+        mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+        mLoginFormView.animate().setDuration(shortAnimTime).alpha(
+                show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            }
+        });
 
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mProgressView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-                }
-            });
-        } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-        }
+        mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+        mProgressView.animate().setDuration(shortAnimTime).alpha(
+                show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            }
+        });
     }
 
     @Override
@@ -327,27 +297,10 @@ public class VerifyActivity extends Activity implements LoaderCallbacks<Cursor> 
 
             try {
                 // Simulate network access.
-                HttpURLConnection httpURLConnection =new HttpURLConnection(new URL("")) {
-                    @Override
-                    public void disconnect() {
 
-                    }
-
-                    @Override
-                    public boolean usingProxy() {
-                        return false;
-                    }
-
-                    @Override
-                    public void connect() throws IOException {
-
-                    }
-                };
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
                 return false;
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
             }
 
             for (String credential : DUMMY_CREDENTIALS) {
@@ -381,6 +334,5 @@ public class VerifyActivity extends Activity implements LoaderCallbacks<Cursor> 
             showProgress(false);
         }
     }
-
 }
 

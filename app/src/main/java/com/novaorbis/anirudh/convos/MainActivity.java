@@ -1,16 +1,15 @@
 package com.novaorbis.anirudh.convos;
 
-import android.animation.AnimatorInflater;
-import android.animation.AnimatorSet;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ProgressBar;
 
-import java.util.Random;
 import java.util.UUID;
 
 public class MainActivity extends Activity implements Authentication {
@@ -34,22 +33,25 @@ public class MainActivity extends Activity implements Authentication {
         tw.setText("");
         tw.setCharacterDelay(150);
         tw.animateText("Conversations ReImagined");
-        new Handler().postDelayed(new Runnable() {
+        // Using handler with postDelayed called runnable run method
+// Using background task to verify existence of user
+        new Handler().postDelayed(() -> {
+            SharedPreferences sharedPreferences =
+                    PreferenceManager.getDefaultSharedPreferences(this);
+            // Check if we need to display our OnboardingFragment
+            /*if (!sharedPreferences.getBoolean(
+                    MyOnboardingFragment.COMPLETED_ONBOARDING_PREF_NAME, false)) {
+                // The user hasn't seen the OnboardingFragment yet, so show it
+                startActivity(new Intent(this, OnboardingActivity.class));
+            }*/
+             Intent i = new Intent(MainActivity.this, TalksActivity.class);
+                startActivity(i);
 
-            // Using handler with postDelayed called runnable run method
-            // Using background task to verify existence of user
-
-            @Override
-            public void run() {
-                 Intent i = new Intent(MainActivity.this, TalksActivity.class);
-
-                    startActivity(i);
-               // }
-                //Intent intent =new Intent(MainActivity.this, TalksActivity.class);
-                //startActivityForResult(intent,1);
-                // close this activity
-                finish();
-            }
+           // }
+            //Intent intent =new Intent(MainActivity.this, TalksActivity.class);
+            //startActivityForResult(intent,1);
+            // close this activity
+            finish();
         }, 4*1000);
 
     }

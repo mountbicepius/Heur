@@ -15,6 +15,7 @@
     <string name="form_username">Enter a name of your choice</string>
     <string name="form_phoneSecret">Enter your Phone Number </string>
     <string name="action_sign_in">Proceed </string>
+    <string name="offline_err">You are offline trying to reconnect</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
@@ -47,4 +48,12 @@
 
     <string name="no_address">No addresses found</string>
     <string name="no_intent_found">No application found to handle this action</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+
+    <string name="title_activity_image">ImageActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>
