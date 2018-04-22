@@ -1,4 +1,4 @@
-package com.novaorbis.anirudh.convos;
+package com.novaorbis.anirudh.heur.chatRoom;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -13,12 +13,16 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.novaorbis.anirudh.heur.R;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class convoActivity extends Activity {
 
+    //Message Queue status
+    public static final String EXTRA_REPLY = "com.example.android.msgList.MSG_SENT";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +30,7 @@ public class convoActivity extends Activity {
         setContentView(R.layout.activity_convo);
         Objects.requireNonNull(getActionBar()).setDisplayHomeAsUpEnabled(true);
         getActionBar().setIcon(R.mipmap.icon);
+
 
         //Message Buffer
         RecyclerView mMessageCache = findViewById(R.id.messageRecyclerView);
@@ -61,14 +66,17 @@ public class convoActivity extends Activity {
                     int newMsgPosition = msgDtoList.size() - 1;
                     // Notify recycler view insert one new data.
                     chatAppMsgAdapter.notifyItemInserted(newMsgPosition);
+                    //Assign Message values and save to LocalDb
 
                     // Scroll RecyclerView to the last message.
                     mMessageCache.scrollToPosition(newMsgPosition);
                     // Empty the input edit text box.
                     mSendMsg.setText(" ");
+                    finish();
                 }
         });
     }
+
 
 
     public long timeStamp()

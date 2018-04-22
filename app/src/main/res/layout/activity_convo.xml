@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.novaorbis.anirudh.convos.convoActivity">
+    tools:context="com.novaorbis.anirudh.convos.chatRoom.convoActivity">
 
     <!--<ImageView
         android:id="@+id/agent"
@@ -39,6 +39,7 @@
             android:id="@+id/addMessageImageView"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_gravity="right"
             ads:srcCompat="@android:drawable/ic_btn_speak_now"/>
 
         <EditText

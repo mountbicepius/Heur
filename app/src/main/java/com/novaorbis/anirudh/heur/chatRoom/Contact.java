@@ -1,9 +1,4 @@
-package com.novaorbis.anirudh.convos;
-
-import android.content.Context;
-
-import java.util.ArrayList;
-import java.util.List;
+package com.novaorbis.anirudh.heur.chatRoom;
 
 public class Contact
 {

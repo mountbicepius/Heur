@@ -1,4 +1,4 @@
-package com.novaorbis.anirudh.convos;
+package com.novaorbis.anirudh.heur;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.novaorbis.anirudh.heur.chatRoom.Contact;
+import com.novaorbis.anirudh.heur.chatRoom.ContactModel;
+import com.novaorbis.anirudh.heur.chatRoom.convoActivity;
 
 import java.util.List;
 

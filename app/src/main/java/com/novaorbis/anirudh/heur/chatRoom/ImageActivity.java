@@ -1,4 +1,4 @@
-package com.novaorbis.anirudh.convos;
+package com.novaorbis.anirudh.heur.chatRoom;
 
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
+
+import com.novaorbis.anirudh.heur.R;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.

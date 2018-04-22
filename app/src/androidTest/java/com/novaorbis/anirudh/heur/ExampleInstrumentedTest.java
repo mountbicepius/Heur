@@ -1,4 +1,4 @@
-package com.novaorbis.anirudh.convos;
+package com.novaorbis.anirudh.heur;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

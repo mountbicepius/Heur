@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.novaorbis.anirudh.convos"
+    package="com.novaorbis.anirudh.heur"
     tools:ignore="MissingLeanbackLauncher">
 
     <uses-sdk
@@ -50,13 +50,13 @@
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/default_notification_channel_id" />
 
-        <service android:name=".MyFirebaseInstanceIDService">
+        <service android:name=".breifHelpers.MyFirebaseInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
         <service
-            android:name=".MyFirebaseMessagingService"
+            android:name=".breifHelpers.MyFirebaseMessagingService"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -80,7 +80,7 @@
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".convoActivity"
+            android:name=".chatRoom.convoActivity"
             android:label="@string/title_activity_convo"
             android:parentActivityName=".TalksActivity"
             android:theme="@android:style/Theme.Material.Light.DarkActionBar" />
@@ -89,7 +89,7 @@
             android:label="@string/title_activity_verify"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ImageActivity"
+            android:name=".chatRoom.ImageActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_image"
             android:theme="@style/FullscreenTheme">

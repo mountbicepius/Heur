@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Convos</string>
+    <string name="app_name">Heur</string>
     <string name="title_activity_talks">TalksActivity</string>
     <string name="default_notification_channel_id">hiya</string>
     <string name="user_male_crumb">This is an introductory chat crumb</string>
