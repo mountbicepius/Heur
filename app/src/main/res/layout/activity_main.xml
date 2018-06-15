@@ -28,7 +28,7 @@
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="294dp" />
 
-    <com.novaorbis.anirudh.convos.TypeWriter
+    <com.novaorbis.anirudh.heur.TypeWriter
         android:id="@+id/titleH"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

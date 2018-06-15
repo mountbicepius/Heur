@@ -2,8 +2,8 @@ package com.novaorbis.anirudh.heur;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,7 +21,7 @@ import com.novaorbis.anirudh.heur.chatRoom.convoActivity;
 import java.util.List;
 
 
-public class TalksActivity  extends FragmentActivity
+public class TalksActivity  extends AppCompatActivity
 {
     private RecyclerView contactsRecyclerView;
     private chatServiceAdapter mAdapter;

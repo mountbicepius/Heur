@@ -1,7 +1,9 @@
 package com.novaorbis.anirudh.heur.chatRoom;
 
-import android.app.Activity;
+import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -13,116 +15,105 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.novaorbis.anirudh.heur.R;
+import com.novaorbis.anirudh.heur.dbHelpers.Msgs;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-public class convoActivity extends Activity {
+public class convoActivity extends AppCompatActivity {
 
     //Message Queue status
     public static final String EXTRA_REPLY = "com.example.android.msgList.MSG_SENT";
+
+    public static final int NEW_WORD_ACTIVITY_REQUEST_CODE = 1;
+    private List<Msgs> msgList =new ArrayList<Msgs>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_convo);
-        Objects.requireNonNull(getActionBar()).setDisplayHomeAsUpEnabled(true);
-        getActionBar().setIcon(R.mipmap.icon);
-
-
+        assert getSupportActionBar() != null;
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setIcon(R.mipmap.icon);
         //Message Buffer
-        RecyclerView mMessageCache = findViewById(R.id.messageRecyclerView);
-
-
-        // Create the initial data list.
-        final List<convosMsg> msgDtoList = new ArrayList<convosMsg>();
-         convosMsg msgDto = new convosMsg(convosMsg.MSG_TYPE_RECEIVED, "hello" , timeStamp());
-        msgDtoList.add(msgDto);
-
         //Layout for storing messages
         LinearLayoutManager obj = new LinearLayoutManager(this);
         obj.setStackFromEnd(true);
+        RecyclerView mMessageCache = findViewById(R.id.messageRecyclerView);
         mMessageCache.setLayoutManager(obj);
-
         // Create the data adapter with above data list.
-        final sentAdapter chatAppMsgAdapter = new sentAdapter(msgDtoList);
-
+        final sentAdapter chatAppMsgAdapter = new sentAdapter(this , msgList);
         // Set data adapter to RecyclerView.
         mMessageCache.setAdapter(chatAppMsgAdapter);
+        // Add an observer on the LiveData returned by getAlphabetizedWords.
+        // The onChanged() method fires when the observed data changes and the activity is
+        // in the foreground.
+
         final EditText mSendMsg = findViewById(R.id.messageEditText);
         Button mSend = findViewById(R.id.sendButton);
-
         // Send Messages on click
         mSend.setOnClickListener((View v) -> {
-
                 String msgContent = mSendMsg.getText().toString();
+
                 if(!TextUtils.isEmpty(msgContent))
                 {
-                    // Add a new sent message to the list.
-                    convosMsg msgSnt = new convosMsg(convosMsg.MSG_TYPE_SENT, msgContent, timeStamp());
-                    msgDtoList.add(msgSnt);
-                    int newMsgPosition = msgDtoList.size() - 1;
+                    Msgs msgSnt = new Msgs(Msgs.MSG_TYPE_SENT, msgContent, timeStamp());
+                    new sendAsync(msgSnt).execute();
+                    int newMsgPosition = msgList.size() - 1;
                     // Notify recycler view insert one new data.
                     chatAppMsgAdapter.notifyItemInserted(newMsgPosition);
                     //Assign Message values and save to LocalDb
-
                     // Scroll RecyclerView to the last message.
                     mMessageCache.scrollToPosition(newMsgPosition);
                     // Empty the input edit text box.
                     mSendMsg.setText(" ");
-                    finish();
+
                 }
         });
     }
+    public class sendAsync extends AsyncTask<URL,String ,Void>
+    {
+        Msgs msgSnt;
+        public sendAsync(Msgs obj)
+        {
+            this.msgSnt = obj;
+        }
 
+        @Override
+        protected Void doInBackground(URL... urls) {
+            // Add a new sent message to the list.
+            assert msgSnt !=null;
+            msgList.add(msgSnt);
+            RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
 
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+        }
+    }
 
     public long timeStamp()
     {
         return System.currentTimeMillis()/1000;
     }
 
-    public  class convosMsg
-    {
-        public final static String MSG_TYPE_SENT = "MSG_TYPE_SENT";
-        public final static String MSG_TYPE_RECEIVED = "MSG_TYPE_RECEIVED";
-        // Message content.
-        private String msgContent;
-// Message type.
-        private String msgType;
-        public convosMsg(String msgType, String msgContent , long timestmp)
-        {
-            this.msgType = msgType;
-            this.msgContent = msgContent;
-        }
-        public String getMsgContent()
-        {
-            return msgContent;
-        }
-        public void setMsgContent(String msgContent)
-        {
-            this.msgContent = msgContent;
-        }
-        public String getMsgType()
-        {
-            return msgType;
-
-        }
-        public void setMsgType(String msgType)
-        {
-            this.msgType =msgType;
-        }
-    }
-
-
+//RecyclerView Adapter class
     public class sentAdapter extends RecyclerView.Adapter<recievedMsg>
     {
-        List<convosMsg> convosMsgList;
-        public sentAdapter(List<convosMsg> msgList)
+        List<Msgs> convosMsgList;
+        private Context ctxt;
+        public sentAdapter(Context ctxt , List<Msgs> dataList)
         {
-            this.convosMsgList = msgList;
+             this.ctxt = ctxt;
+             this.convosMsgList = dataList;
         }
 
         @Override
@@ -134,7 +125,7 @@ public class convoActivity extends Activity {
 
         @Override
         public void onBindViewHolder(final recievedMsg holder, int position) {
-            convosMsg text = this.convosMsgList.get(position);
+            Msgs text = this.convosMsgList.get(position);
             // If the message is a received message.
             if(text.MSG_TYPE_RECEIVED.equals(text.getMsgType())) {
             // Show received message in left linearlayout.
@@ -157,10 +148,15 @@ public class convoActivity extends Activity {
         public int getItemCount() {
             if(convosMsgList==null)
             {
-                convosMsgList = new ArrayList<convosMsg>();
+                convosMsgList = new ArrayList<Msgs>();
             }
             return convosMsgList.size();
         }
+        void setWords(List<Msgs> words){
+            convosMsgList = words;
+            notifyDataSetChanged();
+        }
+
     }
     public class recievedMsg extends RecyclerView.ViewHolder
     {
@@ -179,4 +175,5 @@ public class convoActivity extends Activity {
             }
         }
     }
+
 }

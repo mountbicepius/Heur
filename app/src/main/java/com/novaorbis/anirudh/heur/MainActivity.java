@@ -1,11 +1,11 @@
 package com.novaorbis.anirudh.heur;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AppCompatActivity;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ProgressBar;
@@ -14,7 +14,7 @@ import com.novaorbis.anirudh.heur.breifHelpers.Authentication;
 
 import java.util.UUID;
 
-public class MainActivity extends Activity implements Authentication {
+public class MainActivity extends AppCompatActivity implements Authentication {
 
     public  boolean isAuth;
 
@@ -36,7 +36,7 @@ public class MainActivity extends Activity implements Authentication {
         tw.setCharacterDelay(150);
         tw.animateText("Conversations ReImagined");
         // Using handler with postDelayed called runnable run method
-// Using background task to verify existence of user
+        // Using background task to verify existence of user
         new Handler().postDelayed(() -> {
             SharedPreferences sharedPreferences =
                     PreferenceManager.getDefaultSharedPreferences(this);
