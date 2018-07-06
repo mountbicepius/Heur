@@ -1,12 +1,15 @@
 package com.novaorbis.anirudh.heur;
 
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -14,10 +17,25 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.novaorbis.anirudh.heur.chatRoom.Contact;
-import com.novaorbis.anirudh.heur.chatRoom.ContactModel;
-import com.novaorbis.anirudh.heur.chatRoom.convoActivity;
+import com.novaorbis.anirudh.heur.chatRoom.heurActivity;
+import com.novaorbis.anirudh.heur.dbHelpers.ContactModel;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 
@@ -26,7 +44,7 @@ public class TalksActivity  extends AppCompatActivity
     private RecyclerView contactsRecyclerView;
     private chatServiceAdapter mAdapter;
     ViewPager mViewPager;
-
+    private String senderid = FirebaseInstanceId.getInstance().getId();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +54,8 @@ public class TalksActivity  extends AppCompatActivity
         setContentView(R.layout.activity_talks);
         contactsRecyclerView = findViewById(R.id.contact_list_recycler_view);
         contactsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        //Send current users ID to server
+
 
         ContactModel model = ContactModel.get(getBaseContext());
         List<Contact> contacts = model.getContacts();
@@ -61,7 +81,7 @@ public class TalksActivity  extends AppCompatActivity
         public ViewHolder(View v) {
             super(v);
             v.setOnClickListener(v1 -> {
-                Intent intent = new Intent(TalksActivity.this,convoActivity.class);
+                Intent intent = new Intent(TalksActivity.this,heurActivity.class);
                 intent.putExtra("EXTRA_CONTACT_JID", userName.getText());
                 startActivity(intent);
             });
@@ -109,6 +129,67 @@ public class TalksActivity  extends AppCompatActivity
             return dataList.size();
         }
 
+    }
+    private class registerAsync extends AsyncTask<String , Void , Boolean>
+    {
+        Context mContext;
+        registerAsync(Context context)
+        {
+            this.mContext = context;
+        }
+
+        @Override
+        protected Boolean doInBackground(String... strings) {
+            RequestQueue mRequestQueue = Volley.newRequestQueue(mContext);
+            String url = "https://heur-messaging.herokuapp.com/msg";
+            JSONObject object = new JSONObject();
+            try {
+                object.put("",)
+                object.put("senderID",senderid);
+                final String jsonBody = object.toString();
+
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.i("VOLLEY", response);
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("VOLLEY", error.toString());
+                    }
+                }) {
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/json; charset=utf-8";
+                    }
+
+                    @Override
+                    public byte[] getBody() throws AuthFailureError {
+                        try {
+                            return jsonBody == null ? null : jsonBody.getBytes("utf-8");
+                        } catch (UnsupportedEncodingException uee) {
+                            VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", jsonBody, "utf-8");
+                            return null;
+                        }
+                    }
+
+                    @Override
+                    protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                        String responseString = "";
+                        if (response != null) {
+                            responseString = String.valueOf(response.statusCode);
+                            // can get more details such as response.headers
+                        }
+                        return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+                    }
+                };
+                mRequestQueue.add(stringRequest);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+                return true;
+        }
     }
 
 

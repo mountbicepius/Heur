@@ -39,7 +39,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // message, here is where that should be initiated. See sendNotification method below.
     }
 
-    private void handleNow() {
+    private void handleNow()
+    {
+
     }
 
     private void scheduleJob() {

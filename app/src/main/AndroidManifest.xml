@@ -14,6 +14,8 @@
         android:required="false" />
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
@@ -67,6 +69,14 @@
         <activity
             android:name=".MainActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+
+        </activity>
+        <activity
+            android:name=".TalksActivity"
+            android:label="@string/title_activity_talks"
+            android:roundIcon="@mipmap/icon"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
+            android:windowSoftInputMode="adjustResize" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -74,13 +84,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".TalksActivity"
-            android:label="@string/title_activity_talks"
-            android:roundIcon="@mipmap/icon"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
-            android:windowSoftInputMode="adjustResize" />
-        <activity
-            android:name=".chatRoom.convoActivity"
+            android:name=".chatRoom.heurActivity"
             android:label="@string/title_activity_convo"
             android:parentActivityName=".TalksActivity"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
