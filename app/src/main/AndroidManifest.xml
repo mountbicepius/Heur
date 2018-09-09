@@ -4,8 +4,8 @@
     package="com.novaorbis.anirudh.heur"
     tools:ignore="MissingLeanbackLauncher">
 
-    <uses-sdk
-        tools:ignore="GradleOverrides" />
+    <uses-sdk tools:ignore="GradleOverrides" />
+
     <uses-feature
         android:name="android.software.leanback"
         android:required="false" />
@@ -14,7 +14,8 @@
         android:required="false" />
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_SETTINGS"
+    <uses-permission
+        android:name="android.permission.WRITE_SETTINGS"
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -52,42 +53,42 @@
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/default_notification_channel_id" />
 
-        <service android:name=".breifHelpers.MyFirebaseInstanceIDService">
+        <!-- [START firebase_service] -->
+        <service
+            android:name=".breifHelpers.MyFirebaseMessagingService">
             <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
-        <service
-            android:name=".breifHelpers.MyFirebaseMessagingService"
-            android:enabled="true"
-            android:exported="true">
+        <!-- [END firebase_service] -->
+        <service android:name=".breifHelpers$MyFirebaseMessagingService$MyJobService"
+            android:exported="false">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"/>
             </intent-filter>
         </service>
 
         <activity
             android:name=".MainActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme"/>
         <activity
             android:name=".TalksActivity"
             android:label="@string/title_activity_talks"
             android:roundIcon="@mipmap/icon"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
-            android:windowSoftInputMode="adjustResize" >
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+
         </activity>
         <activity
-            android:name=".chatRoom.heurActivity"
-            android:label="@string/title_activity_convo"
+            android:name=".chatRoom.HeurActivity"
+            android:label="@string/title_activity_heur"
             android:parentActivityName=".TalksActivity"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".VerifyActivity"
             android:label="@string/title_activity_verify"
@@ -96,9 +97,12 @@
             android:name=".chatRoom.ImageActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_image"
-            android:theme="@style/FullscreenTheme">
-
-        </activity>
+            android:theme="@style/FullscreenTheme"/>
+        <activity
+            android:name=".chatRoom.chatActivity"
+            android:label="@string/title_activity_chat"
+            android:theme="@style/AppTheme"
+            android:parentActivityName=".TalksActivity"/>
     </application>
 
 </manifest>

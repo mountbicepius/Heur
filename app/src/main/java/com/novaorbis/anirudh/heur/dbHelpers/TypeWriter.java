@@ -1,9 +1,8 @@
-package com.novaorbis.anirudh.heur;
+package com.novaorbis.anirudh.heur.dbHelpers;
 
 import android.content.Context;
 import android.os.Handler;
 import android.util.AttributeSet;
-import android.widget.TextView;
 
 
 public class TypeWriter extends android.support.v7.widget.AppCompatTextView {

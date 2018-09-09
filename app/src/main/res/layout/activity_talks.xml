@@ -5,15 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    android:padding="16dp"
+    android:padding="12dp"
     tools:context=".TalksActivity">
 
 
-    <android.support.v4.view.ViewPager
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/contact_list_recycler_view"
@@ -22,5 +23,17 @@
 
     </android.support.v7.widget.RecyclerView>
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="14dp"
+        android:elevation="@dimen/activity_horizontal_margin"
+        android:fadingEdge="horizontal"
+        android:src="@mipmap/icon"
+        app:elevation="@dimen/activity_vertical_margin" />
 
 </RelativeLayout>

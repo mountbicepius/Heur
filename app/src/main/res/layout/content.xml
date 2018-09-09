@@ -6,7 +6,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="100dp"
-    android:elevation="5dp"
+    android:elevation="56dp"
     android:padding="@dimen/default_gap"
     android:id="@+id/cv">
 

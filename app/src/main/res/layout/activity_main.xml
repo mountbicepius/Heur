@@ -17,7 +17,7 @@
         tools:layout_editor_absoluteX="69dp"
         tools:layout_editor_absoluteY="16dp" />
 
-    <ProgressBar
+    <!--<ProgressBar
         android:id="@+id/loaden"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,9 +26,9 @@
         android:layout_marginBottom="150dp"
         tools:ignore="RtlCompat"
         tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="294dp" />
+        tools:layout_editor_absoluteY="294dp" />-->
 
-    <com.novaorbis.anirudh.heur.TypeWriter
+    <com.novaorbis.anirudh.heur.dbHelpers.TypeWriter
         android:id="@+id/titleH"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

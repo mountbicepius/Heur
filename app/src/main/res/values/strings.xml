@@ -4,7 +4,7 @@
     <string name="default_notification_channel_id">hiya</string>
     <string name="user_male_crumb">This is an introductory chat crumb</string>
     <string name="title_activity_verify">VerifyActivity</string>
-    <string name="title_activity_convo">convoActivity</string>
+    <string name="title_activity_heur">HeurActivity</string>
 
     <string name="permission_denied">Sorry you denied permission</string>
     <string name="permission_required_toast">Need permissions to proceed</string>
@@ -12,6 +12,7 @@
 
 
     <!-- Strings related to login -->
+    <string name="wlcmtext">Welcome, Please sign in below to start</string>
     <string name="form_username">Enter a name of your choice</string>
     <string name="form_phoneSecret">Enter your Phone Number </string>
     <string name="action_sign_in">Proceed </string>
@@ -56,4 +57,15 @@
     <string name="title_activity_image">ImageActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="default_notification_channel_name">Heur</string>
+    <string name="title_activity_chat">Hi</string>
+    <string name="duplicate">User already made</string>
+    <string name="signinfail">Error , Sign in failed</string>
+
+
+    <!--Useful URL's for Api Calls -->
+
+    <string name="users">https://heur-messaging.herokuapp.com/msg</string>
+    <string name="msgs">https://heur-messaging.herokuapp.com/msg/send</string>
+    <string name="devices">https://heur-messaging.herokuapp.com/msg/convos</string>
 </resources>

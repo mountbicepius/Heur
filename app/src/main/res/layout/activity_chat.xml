@@ -11,17 +11,17 @@
     tools:context="com.novaorbis.anirudh.heur.chatRoom.heurActivity">
 
 
-    <ImageView
+    <android.support.design.widget.FloatingActionButton
         android:id="@+id/agent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="14dp"
         android:elevation="@dimen/activity_horizontal_margin"
         android:fadingEdge="horizontal"
-        android:src="@mipmap/fab" />
+        android:background="@mipmap/icon"/>
 
     <co.intentservice.chatui.ChatView
         android:id="@+id/message"
