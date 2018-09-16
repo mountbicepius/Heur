@@ -14,13 +14,14 @@
         android:id="@+id/delores"
         chatview:backgroundColor="@color/browser_actions_bg_grey"
         chatview:sendBtnIcon="@android:drawable/ic_media_play"
+        chatview:sendBtnBackgroundTint="@color/u_blue_light"
+        chatview:bubbleElevation="elevated"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/activity_horizontal_margin">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
         <ImageView
             android:layout_width="62dp"

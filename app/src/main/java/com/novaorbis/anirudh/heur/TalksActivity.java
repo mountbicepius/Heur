@@ -45,6 +45,7 @@ import java.util.Objects;
 
 public class TalksActivity  extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener
 {
+    private static final int REQ = 1;
     private RecyclerView contactsRecyclerView;
     private chatServiceAdapter mAdapter;
     //private DividerItemDecoration dividerItemDecoration;
@@ -138,7 +139,7 @@ public class TalksActivity  extends AppCompatActivity implements GoogleApiClient
         //Add Device reference
         mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
         mFirebaseDatabaseReference.child("Users")
-                .child(mFirebaseUser.getDisplayName())
+                .child(Objects.requireNonNull(mFirebaseUser.getDisplayName()))
                 .setValue(mFCM.getToken());
     }
 

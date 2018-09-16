@@ -9,7 +9,6 @@ import android.annotation.TargetApi;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -105,7 +104,7 @@ public class chatActivity extends AppCompatActivity {
             final List<ChatMessage> msgCache = new ArrayList<ChatMessage>();
             msgCache.add(chatMessage);
             new msgHelper().saveFavorites(getApplicationContext(),msgCache);
-            new sendAsync(chatMessage, getDeviceID(this.mUser)).execute();
+            msgSend(chatMessage,getDeviceID(mUser));
             return true;
         });
         if (msgHelper.getFavorites(getApplicationContext()) != null)
@@ -123,7 +122,6 @@ public class chatActivity extends AppCompatActivity {
                 try {
                     JSONObject object= response.getJSONObject(i);
                         deviceTokenof[0]=object.getString(mUsername);
-
                    }
                  catch (JSONException e) {
                     e.printStackTrace();
@@ -134,6 +132,7 @@ public class chatActivity extends AppCompatActivity {
                     .show();
         });
         devReq.add(arrayRequest);
+        Log.d(TAG,deviceTokenof[0]);
         /*
         *ValueEventListener postListener = new ValueEventListener() {
             @Override
@@ -152,70 +151,77 @@ public class chatActivity extends AppCompatActivity {
         };
         mFirebaseDatabaseReference.addValueEventListener(postListener);*/
         return deviceTokenof[0];
+
     }
 
    @TargetApi(Build.VERSION_CODES.CUPCAKE)
    @SuppressLint("StaticFieldLeak")
-   public class sendAsync extends AsyncTask<String ,Void,Boolean>  {
+   /*public class sendAsync extends AsyncTask<String ,Void,Void>  {
 
         ChatMessage senMsg;
         String deviceToken=" ";
-        public sendAsync(ChatMessage chatMessage,String token)
+        sendAsync(ChatMessage chatMessage,String token)
         {
             this.senMsg = chatMessage;
             this.deviceToken =  token;
         }
         @Override
-        protected Boolean doInBackground(String... strings) {
+        protected Void doInBackground(String... strings) {
             try {
-                RequestQueue sendMsg = Volley.newRequestQueue(chatActivity.this);
-                StringRequest msgRequest = new StringRequest(Request.Method.POST,getResources().getString(R.string.msgs), (String response) -> {
-                    try {
-                        Toast.makeText(chatActivity.this, response, Toast.LENGTH_SHORT)
-                                .show();
-                        Log.d(TAG, deviceToken);
-                    }catch (Exception e)
-                    {
-                        e.printStackTrace();
-                    }
-                }, error -> {
-                        Toast.makeText(chatActivity.this,error.getMessage(),Toast.LENGTH_SHORT)
-                                .show();
-                }){
-                    /**
-                     * Returns a Map of parameters to be used for a POST or PUT request.  Can throw
-                     * {@link AuthFailureError} as authentication may be required to provide these values.
-                     *
-                     * <p>Note that you can directly override {@link #getBody()} for custom data.</p>
-                     *
-                     * @throws AuthFailureError in the event of auth failure
-                     */
-                    @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
-                        final Map<String, String> params = new HashMap<>();
-                        params.put("from", Objects.requireNonNull(mFirebaseUser.getDisplayName()));
-                        params.put("to",mUser);
-                        params.put("token",Objects.requireNonNull(deviceToken));
-                        params.put("msgs",senMsg.getMessage());
-                        return super.getParams();
-                    }
-                };
-                sendMsg.add(msgRequest);
-                return true;
+
             }
             catch (Exception e) {
-                return false;
+                e.printStackTrace();
             }
+            return null;
         }
-        @Override
-        protected void onPostExecute(Boolean aVoid) {
-            super.onPostExecute(aVoid);
-        }
-    }
+
+
+       @Override
+       protected void onPostExecute(Void aVoid) {
+           super.onPostExecute(aVoid);
+       }
+   }*/
 
     public long timeStamp()
     {
         return System.currentTimeMillis()/1000;
+    }
+    public void msgSend(ChatMessage senMsg,String deviceToken)
+    {
+        RequestQueue sendMsg = Volley.newRequestQueue(chatActivity.this);
+        StringRequest msgRequest = new StringRequest(Request.Method.POST,getResources().getString(R.string.msgs), (String response) -> {
+            try {
+                Toast.makeText(chatActivity.this, response, Toast.LENGTH_SHORT)
+                        .show();
+                //Log.d(TAG, deviceToken);
+            }catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }, error -> {
+            Toast.makeText(chatActivity.this,error.getMessage(),Toast.LENGTH_SHORT)
+                    .show();
+        }){
+            /**
+             * Returns a Map of parameters to be used for a POST or PUT request.  Can throw
+             * {@link AuthFailureError} as authentication may be required to provide these values.
+             *
+             * <p>Note that you can directly override {@link #getBody()} for custom data.</p>
+             *
+             * @throws AuthFailureError in the event of auth failure
+             */
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                final Map<String, String> params = new HashMap<>();
+                params.put("from", Objects.requireNonNull(mFirebaseUser.getDisplayName()));
+                params.put("to",mUser);
+                params.put("token",deviceToken);
+                params.put("msgs",senMsg.getMessage());
+                return super.getParams();
+            }
+        };
+        sendMsg.add(msgRequest);
     }
 
     @Override
