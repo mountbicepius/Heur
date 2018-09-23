@@ -18,7 +18,8 @@ import android.widget.Toast;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,7 +27,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.novaorbis.anirudh.heur.R;
 import com.novaorbis.anirudh.heur.dbHelpers.msgHelper;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -54,15 +54,52 @@ public class chatActivity extends AppCompatActivity {
     private FirebaseUser mFirebaseUser= mFirebaseAuth.getCurrentUser();
     //Firebase Instance Variables
     //private DatabaseReference mFirebaseDatabaseReference;
-    private String mUser;
+    private static String mUser;
+    private static String mDevicetoken = null;
 
+    private void getDeviceID(String mUsername)
+    {
+        String url = getResources().getString(R.string.devices);
+        RequestQueue devReq = Volley.newRequestQueue(this);
+        JsonObjectRequest arrayRequest = new JsonObjectRequest(Request.Method.GET,url,null, (JSONObject response) -> {
+            for (int i = 0; i < response.length(); i++) {
+                try {
+                    mDevicetoken= response.getString(mUsername);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        },(VolleyError error) ->{
+            Toast.makeText(this,error.getMessage(),Toast.LENGTH_SHORT)
+                    .show();
+        });
+        devReq.add(arrayRequest);
+        /*
+        *ValueEventListener postListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get Post object and use the values to update the UI
+              deviceTokenof[0] = Objects.requireNonNull(dataSnapshot.child("Users").child(mUsername).getValue()).toString();
+                Log.d(TAG,deviceTokenof[0]);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+                // ...
+            }
+        };
+        mFirebaseDatabaseReference.addValueEventListener(postListener);*/
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        this.mUser= getIntent().getStringExtra("EXTRA_CONTACT_JID");
+        mUser= getIntent().getStringExtra("EXTRA_CONTACT_JID");
+        getDeviceID(mUser);
         assert getSupportActionBar() != null;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setIcon(R.mipmap.icon);
@@ -104,7 +141,7 @@ public class chatActivity extends AppCompatActivity {
             final List<ChatMessage> msgCache = new ArrayList<ChatMessage>();
             msgCache.add(chatMessage);
             new msgHelper().saveFavorites(getApplicationContext(),msgCache);
-            msgSend(chatMessage,getDeviceID(mUser));
+            msgSend(chatMessage);
             return true;
         });
         if (msgHelper.getFavorites(getApplicationContext()) != null)
@@ -112,89 +149,48 @@ public class chatActivity extends AppCompatActivity {
             mMessageCache.addMessages(msgHelper.getFavorites(getApplicationContext()));
         }
     }
-    public String getDeviceID(String mUsername)
-    {
-        final String[] deviceTokenof = new String[1];
-        String url = getResources().getString(R.string.devices);
-        RequestQueue devReq = Volley.newRequestQueue(this);
-        JsonArrayRequest arrayRequest = new JsonArrayRequest(url, (JSONArray response) -> {
-            for (int i = 0; i < response.length(); i++) {
-                try {
-                    JSONObject object= response.getJSONObject(i);
-                        deviceTokenof[0]=object.getString(mUsername);
-                   }
-                 catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        },error ->{
-            Toast.makeText(this,error.getMessage(),Toast.LENGTH_SHORT)
-                    .show();
-        });
-        devReq.add(arrayRequest);
-        Log.d(TAG,deviceTokenof[0]);
-        /*
-        *ValueEventListener postListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // Get Post object and use the values to update the UI
-              deviceTokenof[0] = Objects.requireNonNull(dataSnapshot.child("Users").child(mUsername).getValue()).toString();
-                Log.d(TAG,deviceTokenof[0]);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
-                // ...
-            }
-        };
-        mFirebaseDatabaseReference.addValueEventListener(postListener);*/
-        return deviceTokenof[0];
-
-    }
 
    @TargetApi(Build.VERSION_CODES.CUPCAKE)
    @SuppressLint("StaticFieldLeak")
-   /*public class sendAsync extends AsyncTask<String ,Void,Void>  {
+               /* public class sendAsync extends AsyncTask<String ,Void,Void>  {
 
-        ChatMessage senMsg;
-        String deviceToken=" ";
-        sendAsync(ChatMessage chatMessage,String token)
-        {
-            this.senMsg = chatMessage;
-            this.deviceToken =  token;
-        }
-        @Override
-        protected Void doInBackground(String... strings) {
-            try {
+                    ChatMessage senMsg;
+                    String deviceToken=" ";
+                    sendAsync(ChatMessage chatMessage,String token)
+                    {
+                        this.senMsg = chatMessage;
+                        this.deviceToken =  token;
+                    }
+                    @Override
+                    protected Void doInBackground(String... strings) {
+                        try {
 
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        return null;
+                    }
 
 
-       @Override
-       protected void onPostExecute(Void aVoid) {
-           super.onPostExecute(aVoid);
-       }
-   }*/
+                   @Override
+                   protected void onPostExecute(Void aVoid) {
+                       super.onPostExecute(aVoid);
+                   }
+               } */
 
     public long timeStamp()
     {
         return System.currentTimeMillis()/1000;
     }
-    public void msgSend(ChatMessage senMsg,String deviceToken)
+    public void msgSend(ChatMessage senMsg)
     {
         RequestQueue sendMsg = Volley.newRequestQueue(chatActivity.this);
         StringRequest msgRequest = new StringRequest(Request.Method.POST,getResources().getString(R.string.msgs), (String response) -> {
             try {
                 Toast.makeText(chatActivity.this, response, Toast.LENGTH_SHORT)
                         .show();
-                //Log.d(TAG, deviceToken);
+                Log.d(TAG, mDevicetoken);
             }catch (Exception e)
             {
                 e.printStackTrace();
@@ -212,13 +208,13 @@ public class chatActivity extends AppCompatActivity {
              * @throws AuthFailureError in the event of auth failure
              */
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                final Map<String, String> params = new HashMap<>();
-                params.put("from", Objects.requireNonNull(mFirebaseUser.getDisplayName()));
-                params.put("to",mUser);
-                params.put("token",deviceToken);
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("sender", Objects.requireNonNull(mFirebaseUser.getDisplayName()));
+                params.put("recipient",mUser);
+                params.put("token",mDevicetoken);
                 params.put("msgs",senMsg.getMessage());
-                return super.getParams();
+                return params;
             }
         };
         sendMsg.add(msgRequest);
