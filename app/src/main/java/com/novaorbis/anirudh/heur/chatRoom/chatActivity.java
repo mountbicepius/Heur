@@ -124,12 +124,15 @@ public class chatActivity extends AppCompatActivity {
         //
         // Handle possible data accompanying notification message.
         // [START handle_data_extras]
-        if (getIntent().getExtras() != null) {
+        /*if (getIntent().getStringExtra(EXTRA_REPLY) != null) {
             for (String key : getIntent().getExtras().keySet()) {
                 Object value = getIntent().getExtras().get(key);
                 Log.d(TAG, "Key: " + key + " Value: " + value);
-            }
-        }
+            }*/
+        String message = getIntent().getStringExtra(EXTRA_REPLY);
+        assert message !=null;
+        ChatMessage chMsg = new ChatMessage(message,timeStamp(), ChatMessage.Type.RECEIVED);
+        mMessageCache.addMessage(chMsg);
         // [END handle_data_extras]
         //mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
 
