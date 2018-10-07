@@ -8,8 +8,7 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-
-import com.novaorbis.anirudh.heur.dbHelpers.TypeWriter;
+import android.widget.ProgressBar;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,15 +22,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        final TypeWriter tw = findViewById(R.id.titleH);
-        //final ProgressBar pb =findViewById(R.id.loaden);
+        final ProgressBar pb =findViewById(R.id.loaden);
         Animation hyperspaceJumpAnimation = AnimationUtils.loadAnimation(this, R.anim.floatatin);
         findViewById(R.id.header).setAnimation(hyperspaceJumpAnimation);
-        /*assert pb !=null;
-        pb.isIndeterminate();*/
-        tw.setText("");
-        tw.setCharacterDelay(150);
-        tw.animateText("Conversations ReImagined");
+        assert pb !=null;
+        pb.isIndeterminate();
+
         // Using handler with postDelayed called runnable run method
         // Using background task to verify existence of user
         new Handler().postDelayed(() -> {
@@ -51,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
             //startActivityForResult(intent,1);
             // close this activity
             finish();
-        }, 4*1000);
+        }, 1000);
 
     }
 

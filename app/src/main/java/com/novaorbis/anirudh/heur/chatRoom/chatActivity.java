@@ -22,6 +22,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.novaorbis.anirudh.heur.R;
@@ -74,23 +75,23 @@ public class chatActivity extends AppCompatActivity {
                     .show();
         });
         devReq.add(arrayRequest);
-        /*
-        *ValueEventListener postListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // Get Post object and use the values to update the UI
-              deviceTokenof[0] = Objects.requireNonNull(dataSnapshot.child("Users").child(mUsername).getValue()).toString();
-                Log.d(TAG,deviceTokenof[0]);
-            }
+        /**ValueEventListener postListener = new ValueEventListener() {
+                      @Override
+                      public void onDataChange(DataSnapshot dataSnapshot) {
+                          // Get Post object and use the values to update the UI
+                        deviceTokenof[0] = Objects.requireNonNull(dataSnapshot.child("Users").child(mUsername).getValue()).toString();
+                          Log.d(TAG,deviceTokenof[0]);
+                      }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
-                // ...
-            }
-        };
-        mFirebaseDatabaseReference.addValueEventListener(postListener);*/
+                      @Override
+                      public void onCancelled(DatabaseError databaseError) {
+                         // Getting Post failed, log a message
+                          Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+                          // ...
+                      }
+                  };
+         * mFirebaseDatabaseReference.addValueEventListener(postListener);
+         */
     }
 
     @Override
@@ -124,15 +125,12 @@ public class chatActivity extends AppCompatActivity {
         //
         // Handle possible data accompanying notification message.
         // [START handle_data_extras]
-        /*if (getIntent().getStringExtra(EXTRA_REPLY) != null) {
+        /**if (getIntent().getStringExtra(EXTRA_REPLY) != null) {
             for (String key : getIntent().getExtras().keySet()) {
                 Object value = getIntent().getExtras().get(key);
                 Log.d(TAG, "Key: " + key + " Value: " + value);
             }*/
-        String message = getIntent().getStringExtra(EXTRA_REPLY);
-        assert message !=null;
-        ChatMessage chMsg = new ChatMessage(message,timeStamp(), ChatMessage.Type.RECEIVED);
-        mMessageCache.addMessage(chMsg);
+
         // [END handle_data_extras]
         //mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
 
@@ -140,10 +138,6 @@ public class chatActivity extends AppCompatActivity {
         mMessageCache = findViewById(R.id.message);
         mMessageCache.setOnSentMessageListener(chatMessage -> {
             chatMessage.setType(ChatMessage.Type.SENT);
-            //save message to device
-            final List<ChatMessage> msgCache = new ArrayList<ChatMessage>();
-            msgCache.add(chatMessage);
-            new msgHelper().saveFavorites(getApplicationContext(),msgCache);
             msgSend(chatMessage);
             return true;
         });
@@ -155,32 +149,36 @@ public class chatActivity extends AppCompatActivity {
 
    @TargetApi(Build.VERSION_CODES.CUPCAKE)
    @SuppressLint("StaticFieldLeak")
-               /* public class sendAsync extends AsyncTask<String ,Void,Void>  {
 
-                    ChatMessage senMsg;
-                    String deviceToken=" ";
-                    sendAsync(ChatMessage chatMessage,String token)
-                    {
-                        this.senMsg = chatMessage;
-                        this.deviceToken =  token;
-                    }
-                    @Override
-                    protected Void doInBackground(String... strings) {
-                        try {
+     /**public class sendAsync extends AsyncTask<String ,Void,Void>  {
 
-                        }
-                        catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        return null;
-                    }
+                         ChatMessage senMsg;
+                         String deviceToken=" ";
+                         sendAsync(ChatMessage chatMessage,String token)
+                         {
+                             this.senMsg = chatMessage;
+                             this.deviceToken =  token;
+                         }
+                         @Override
+                         protected Void doInBackground(String... strings) {
+                             try {
+
+                            }
+                             catch (Exception e) {
+                                 e.printStackTrace();
+                             }
+                             return null;
+                         }
 
 
-                   @Override
-                   protected void onPostExecute(Void aVoid) {
-                       super.onPostExecute(aVoid);
-                   }
-               } */
+                        @Override
+                       protected void onPostExecute(Void aVoid) {
+                            super.onPostExecute(aVoid);
+                       }
+      *              }
+      */
+
+
 
     public long timeStamp()
     {

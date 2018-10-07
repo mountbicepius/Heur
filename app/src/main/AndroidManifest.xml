@@ -62,7 +62,7 @@
             </intent-filter>
         </service>
         <!-- [END firebase_service] -->
-        <service android:name=".breifHelpers$MyFirebaseMessagingService$MyJobService"
+        <service android:name=".breifHelpers.MyFirebaseMessagingService$MyJobService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"/>

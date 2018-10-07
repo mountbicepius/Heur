@@ -26,6 +26,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -46,32 +47,31 @@ import java.util.Objects;
 public class TalksActivity  extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener
 {
     private static final int REQ = 1;
-    private RecyclerView contactsRecyclerView;
     private chatServiceAdapter mAdapter;
     //private DividerItemDecoration dividerItemDecoration;
-    ViewPager mViewPager;
-    private final String device = FirebaseInstanceId.getInstance().getToken();
+    //ViewPager mViewPager;
+
+    private String device;
     public static final String ANONYMOUS = "anonymous";
     private List<Contact> mContacts;
-    private FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
-    private FirebaseUser mFirebaseUser=  mFirebaseAuth.getCurrentUser();
-    private String mUsername = null;
-    private GoogleApiClient mGoogleApiClient;
+    private FirebaseUser mFirebaseUser;
     private String TAG = "Help";
-    private DatabaseReference mFirebaseDatabaseReference;
-    private FirebaseInstanceId mFCM = FirebaseInstanceId.getInstance();
+    private FirebaseInstanceId mFCM;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Set main content view. On smaller screen devices this is a single pane view with one
-        // fragment. One larger screen devices this is a two pane view with two fragments.
         setContentView(R.layout.activity_talks);
-        contactsRecyclerView = findViewById(R.id.contact_list_recycler_view);
+        FirebaseApp.initializeApp(this);
+        device = FirebaseInstanceId.getInstance().getToken();
+        FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
+        mFCM = FirebaseInstanceId.getInstance();
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        RecyclerView contactsRecyclerView = findViewById(R.id.contact_list_recycler_view);
         contactsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         // Set default username is anonymous.
-        mUsername = ANONYMOUS;
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
+        String mUsername = ANONYMOUS;
+        GoogleApiClient mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API)
                 .build();
@@ -113,9 +113,9 @@ public class TalksActivity  extends AppCompatActivity implements GoogleApiClient
             for (int i = 0; i < response.length(); i++) {
                 try {
                     JSONObject object= response.getJSONObject(i);
-                    if(!Objects.requireNonNull(mFirebaseUser.getDisplayName()).equals(object.getString("name")))
+                    if(!Objects.requireNonNull(mFirebaseUser.getEmail()).equals(object.getString("email")))
                     {
-                    mContacts.add(new Contact(object.getString("name")));
+                    mContacts.add(new Contact(object.getString("friendName")));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -137,7 +137,7 @@ public class TalksActivity  extends AppCompatActivity implements GoogleApiClient
         devList.put("Name",mFirebaseUser.getDisplayName());
         devList.put("DeviceID", mFCM.getToken());*/
         //Add Device reference
-        mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
         mFirebaseDatabaseReference.child("Users")
                 .child(Objects.requireNonNull(mFirebaseUser.getDisplayName()))
                 .setValue(mFCM.getToken());

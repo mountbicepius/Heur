@@ -29,6 +29,7 @@ public class VerifyActivity extends AppCompatActivity implements
 
     // Firebase instance variables
     private FirebaseAuth mFirebaseAuth;
+    private SignInButton mSignInButton;
 
 
     @Override
@@ -37,12 +38,11 @@ public class VerifyActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_verify);
 
         // Assign fields
-        SignInButton mSignInButton = findViewById(R.id.sign_in_button);
+        mSignInButton = (SignInButton) findViewById(R.id.sign_in_button);
 
         // Set click listeners
         mSignInButton.setOnClickListener(this);
 
-        // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
