@@ -67,7 +67,7 @@ public class TalksActivity  extends AppCompatActivity implements GoogleApiClient
         FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
         mFCM = FirebaseInstanceId.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
-        RecyclerView contactsRecyclerView = findViewById(R.id.contact_list_recycler_view);
+        RecyclerView contactsRecyclerView = (RecyclerView) findViewById(R.id.contact_list_recycler_view);
         contactsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         // Set default username is anonymous.
         String mUsername = ANONYMOUS;
